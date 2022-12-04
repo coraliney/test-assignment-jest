@@ -8,6 +8,7 @@ import { IMovie } from "../ts/models/Movie";
 import { getData } from "../ts/services/movieservice";
 import * as movieAppFunctions from "./../ts/movieApp";
 import * as movieserviceFunction from "./../ts/services/movieservice";
+import * as msfunction from "../ts/services/movieservice";
 jest.mock("./../ts/services/movieservice.ts");
 
 //FÖRSTA TESTET
@@ -159,4 +160,26 @@ describe("handleSubmit-function connected to if/else", () => {
     expect(sneakyS).toHaveBeenCalled();
     document.body.innerHTML = "";
   });
+});
+
+test("should createhtml", async () => {
+  //arrange
+
+  document.body.innerHTML = `<div id="movie-container"></div>`; // container for the movies that are to be displayed in one div/movie-container
+
+  let container: HTMLDivElement = document.getElementById(
+    "movie-container"
+  ) as HTMLDivElement; // the containerdiv
+
+  let searchText: string = "Falling Down";
+
+  let movies = await movieserviceFunction.getData(searchText);
+
+  //act
+
+  await movieAppFunctions.createHtml(movies, container);
+
+  // assert
+
+  expect(document.querySelectorAll("div.movie").length).toBe(3);
 });
