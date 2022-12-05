@@ -1,5 +1,3 @@
-import { resolveObjectURL } from "buffer";
-
 import { IMovie } from "../../models/Movie";
 
 export const mockData: IMovie[] = [

@@ -1,14 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import { resolveObjectURL } from "buffer";
-import { movieSort } from "../ts/functions";
-import { IOmdbResponse } from "../ts/models/IOmdbResponse";
-import { IMovie } from "../ts/models/Movie";
-import { getData } from "../ts/services/movieservice";
+
 import * as movieAppFunctions from "./../ts/movieApp";
 import * as movieserviceFunction from "./../ts/services/movieservice";
-import * as msfunction from "../ts/services/movieservice";
+
 jest.mock("./../ts/services/movieservice.ts");
 
 //FÖRSTA TESTET
@@ -32,58 +28,6 @@ test("should be able to call fn handleSubmit", () => {
   //assert
   expect(spy).toHaveBeenCalled();
   document.body.innerHTML = "";
-});
-
-//ANDRA TESTET
-test("Should handle given data", async () => {
-  //arrange
-  document.body.innerHTML = "";
-  document.body.innerHTML = `    <form id="searchForm">
-    <input type="text" id="searchText" placeholder="Skriv titel här" value="star" />
-    <button type="submit" id="search">Sök</button>
-  </form>
-  <div id="movie-container"></div>
-  `;
-
-  let spy = jest.spyOn(movieAppFunctions, "createHtml").mockReturnValue();
-
-  //act
-  await movieAppFunctions.handleSubmit();
-
-  //assert
-  expect(spy).toHaveBeenCalled(); //With(movieAppFunctions, container);
-  let searchText: string = (document.body.innerHTML = "");
-});
-
-//TREDJE TESTET
-test("Should handle given data", async () => {
-  //arrange
-  document.body.innerHTML = "";
-  document.body.innerHTML = `    <form id="searchForm">
-      <input type="text" id="searchText" placeholder="Skriv titel här" value="star" />
-      <button type="submit" id="search">Sök</button>
-    </form>
-    <div id="movie-container"></div>
-    `;
-
-  let searchTextTxt: string = (
-    document.getElementById("searchText") as HTMLInputElement
-  ).value;
-  let container = document.getElementById("movie-container") as HTMLDivElement;
-  let spy = jest.spyOn(movieAppFunctions, "displayNoResult");
-  let movies: IMovie[] = [];
-
-  movieAppFunctions.handleSubmit();
-
-  //act
-  /*   try {
-    movies = await getData(searchTextTxt);
-  } catch {
-    //assert */
-  expect(container.innerHTML).toBe("Finns ingenting här");
-  expect(spy).toHaveBeenCalled();
-  /*   }
-}); */
 });
 
 describe("init-fn-innitttt", () => {
@@ -170,16 +114,12 @@ test("should createhtml", async () => {
   let container: HTMLDivElement = document.getElementById(
     "movie-container"
   ) as HTMLDivElement; // the containerdiv
-
   let searchText: string = "Falling Down";
-
   let movies = await movieserviceFunction.getData(searchText);
 
   //act
-
   await movieAppFunctions.createHtml(movies, container);
 
   // assert
-
   expect(document.querySelectorAll("div.movie").length).toBe(3);
 });

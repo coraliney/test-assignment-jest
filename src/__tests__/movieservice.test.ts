@@ -1,13 +1,11 @@
 /**
-
  * @jest-environment jsdom
-
  */
 
-import { IMovie } from "../ts/models/Movie";
 import { getData } from "../ts/services/movieservice";
 import { mockData } from "../ts/services/__mocks__/movieservice";
 
+//TEST-
 jest.mock("axios", () => ({
   get: async (searchText: string) => {
     return new Promise((resolve, reject) => {
@@ -25,37 +23,15 @@ jest.mock("axios", () => ({
   },
 }));
 
-describe("getDatafn", () => {
-  beforeEach(() => {
-    jest.resetModules();
-    jest.restoreAllMocks();
-  });
-
-  test("should get the mockData", async () => {
-    //arr
-
-    expect.assertions(3);
-    let searchText: string = "Falling Down";
-
-    //act
-    let movies: IMovie[] = await getData(searchText);
-
+//TEST-
+test("should not get the mockData", async () => {
+  //arrange
+  let searchText: string = "";
+  //act
+  try {
+    await getData(searchText);
+  } catch (movie: any) {
     //assert
-    expect(movies.length).toBe(3);
-  });
-
-  test("should not get the mockData", async () => {
-    //arr
-
-    let searchText: string = "";
-
-    //act
-    try {
-      await getData(searchText);
-    } catch (movie: any) {
-      //assert
-
-      expect(movie.data.length).toBe(0);
-    }
-  });
+    expect(movie.data.length).toBe(0);
+  }
 });
